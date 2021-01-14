@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %} Buyer - Orders {% endblock %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+
+    <a class="btn btn-primary" href="{% url 'product_list'%}" style="margin-left:22px;margin-top:75px;width:150px">
+        Products
+    </a>
+    <h2 class="display-4 text-center">My orders</h2>
+
+    <div class ="container">
+      <div class="row container">
+        {% for order in buyer_order_list %}
+          <div class="col-sm-6 p-3">
+                <div class="card text-primary">
+                  <div class="card-body">
+                    <p class="card-text">ID: {{ order.id }}</p>
+                    <h5 class="card-title text-dark">Product: {{ order.product.name }}</h5>
+                    <p class="card-text">Seller: {{ order.product.user.username }}</p>
+                    <p class="card-text">Quantity: {{order.noOfPcs}}</p>
+                    <p class="card-text">Total: {{order.total}} lei</p>
+                    <p class="card-text">Date: {{order.date}}</p>
+                    {% if order.status == "IN PROGRESS" %}
+                      <p class="card-text">Status: <span class="text-danger">{{order.status}}</span></p>
+                    {% else %}
+                      <p class="card-text">Status: <span class="text-success">{{order.status}}</span></p>
+                    {% endif %}
+
+                  </div>
+
+
+                </div>
+              </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  {% endif %}
+{% endblock %}

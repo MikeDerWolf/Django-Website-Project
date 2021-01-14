@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %} Buyer - Products {% endblock %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+
+        <a class="btn btn-primary" href="{% url 'buyer_order_list' user.id %}" style="margin-left:22px;margin-top:75px;width:150px">
+            Orders
+        </a>
+        <h2 class="display-4 text-center">Products</h2>
+
+        <div class ="container">
+          <div class="row container">
+            {% for product in product_list %}
+              <div class="col-sm-6 p-3">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description }}</p>
+                    <p class="card-text">Seller: {{ product.user.username }}</p>
+                    <p class="card-text">Stock: {{product.stock}}</p>
+                    <p class="card-text">Price: {{product.price}} lei</p>
+
+                  </div>
+                  <div class="card-footer text-muted">
+                      {% if product.stock >= 1 %}
+                        <form method="POST" class="d-inline" action="{% url 'create_order' user.id product.id %}">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-primary" value="Buy">
+                        </form>
+                      {% else %}
+                        <button class="btn btn-secondary disabled">Buy</button>
+                      {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+  {% endif %}
+{% endblock %}

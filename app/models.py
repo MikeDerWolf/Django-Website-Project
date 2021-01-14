@@ -23,20 +23,22 @@ class Product(models.Model):
 class BuyerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='buyerProfile', primary_key=True)
     address = models.CharField(max_length=100, error_messages={'required': 'This field is required',
-                                                               'invalid': 'Adress has maximum 100 characters!'
+                                                               'invalid': 'Address has maximum 100 characters!'
                                                                })
     role = models.CharField(max_length=10, default='buyer', editable=False)
     orders = models.ManyToManyField(Product, through='Order')
 
 
 class SellerProfile(models.Model):
+    SELLER_TYPES = (
+        ('P', 'Physical person'),
+        ('J', 'Juridical person')
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='sellerProfile', primary_key=True)
     telephone = models.CharField(max_length=10, error_messages={'required': 'This field is required',
                                                                 'invalid': 'Telephone number has maximum 10 digits!'
                                                                 })
-    country = models.CharField(max_length=50, error_messages={'required': 'This field is required',
-                                                              'invalid': 'Country has maximum 50 characters!'
-                                                              })
+    typeOfSeller = models.CharField(max_length=1, choices=SELLER_TYPES)
     role = models.CharField(max_length=10, default='seller', editable=False)
 
 
